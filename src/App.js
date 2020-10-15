@@ -1,12 +1,22 @@
-import React from 'react';
+import 'bootstrap'
+import React from 'react'
+import TodoList from './components/TodoList'
 
 
-function App() {
-  return (
-    <div className="App">
-      <p>To Do List</p>
-    </div>
-  );
+class App extends React.Component {
+constructor() {
+  super();
+  this.state = {
+    tasks : []
+  }
+}
+  render() {
+    return (
+      <div className="App container">
+        <TodoList/>
+      </div>
+    );
+  }
 }
 
 export default App;
