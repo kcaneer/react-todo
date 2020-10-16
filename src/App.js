@@ -1,5 +1,6 @@
 import 'bootstrap'
 import React from 'react'
+import Header from './Header'
 import TodoList from './components/TodoList'
 
 
@@ -13,6 +14,7 @@ constructor() {
   render() {
     return (
       <div className="App container">
+        <Header/>
         <TodoList/>
       </div>
     );
