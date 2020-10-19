@@ -14,8 +14,10 @@ constructor() {
   render() {
     return (
       <div className="App container">
-        <Header/>
-        <TodoList/>
+        <div className="col-6 mx-auto">
+          <Header />
+          <TodoList />
+        </div>
       </div>
     );
   }

@@ -9,9 +9,16 @@ class TodoList extends React.Component {
     };
   }
 //instead of input, use an 0bject that will store unique id, value ie: text, status ie: active
-  addTodo(input) {
+  addTodo() {
     //copy of current list of items so that i don't modify state directly
+    
     let taskArray = this.state.list;
+
+    const input={
+      value: this.state.textInput,
+      id: 1 + Math.random(),
+      // status: active,
+    }
 
     //push new input item to existing list
     taskArray.push(input);
@@ -23,12 +30,11 @@ class TodoList extends React.Component {
     });
   }
 
-  removeTodo() {
-    console.log(this.state.textInput);
-    let newArray = this.state.list.splice(0, this.state.textInput);
+  removeTodo(id) {
+    let foundIndex = this.state.list.findIndex(item => item.id == id)
+    this.state.list.splice(foundIndex, 1);
     this.setState({
-      list: newArray,
-      // textInput:'',
+      list: this.state.list,
     });
   }
 
@@ -45,13 +51,6 @@ class TodoList extends React.Component {
   }
 
   render() {
-    // const input = document.getElementById('button-addon2')
-
-    // input.addEventListener("keyup", function (event) {
-    //     event.preventDefault();
-    //     if (event.keyCode === 13) {
-    //         addTodo();
-    //     }
 
     return (
       <div className="container">
@@ -66,11 +65,6 @@ class TodoList extends React.Component {
               value={this.state.textInput}
               aria-label="Add to List"
               aria-describedby="button-addon2"
-              // onKeyPress={(event) => {
-              //   if (event.keyCode === 13) {
-              //     this.addTodo(this.state.textInput);
-              //   }
-              // }}
             />
             <div className="input-group-append">
               <button
@@ -87,22 +81,26 @@ class TodoList extends React.Component {
         </div>
         <div className="row">
           <ul className="list-group col col-3 mx-auto">
-            {this.state.list.map((val) => (
+            {this.state.list.map((obj) => {
+              return(
               <li className="pt-1">
-                {val}
+                {obj.value}
                 <button
                   type="button"
-                  onClick={() => this.removeTodo(this.state.textInput)}
+                  onClick={() => this.removeTodo(obj.id)}
                   type="button"
                   className="btn btn-danger"
                 >
                   Delete
                 </button>
               </li>
-            ))}
+            )})}
           </ul>
         </div>
-      </div>
+          <footer className="fixed-bottom pb-5 text-center">
+            You have {this.state.list.length} things left to do!
+          </footer>
+        </div>
     );
   }
 }
