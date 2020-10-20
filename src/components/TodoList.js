@@ -6,8 +6,11 @@ class TodoList extends React.Component {
     this.state = {
       textInput: "",
       list: [],
+      // status: "",
+      complete: [],
     };
   }
+
 //instead of input, use an 0bject that will store unique id, value ie: text, status ie: active
   addTodo() {
     //copy of current list of items so that i don't modify state directly
@@ -16,7 +19,7 @@ class TodoList extends React.Component {
 
     const input={
       value: this.state.textInput,
-      id: 1 + Math.random(),
+      id: Date.now(),
       // status: active,
     }
 
@@ -31,9 +34,24 @@ class TodoList extends React.Component {
   }
 
   removeTodo(id) {
-    let foundIndex = this.state.list.findIndex(item => item.id == id)
+    let foundIndex = this.state.list.findIndex(item => item.id === id)
     this.state.list.splice(foundIndex, 1);
     this.setState({
+      list: this.state.list,
+    });
+  }
+
+  markCompleted(id) {
+    let foundItem = this.state.list.find((item) => item.id === id);
+    
+    this.state.list.splice(foundItem, 1);
+    
+    let completeArray = this.state.complete;
+
+    completeArray.push(foundItem);
+  
+    this.setState({
+      complete: completeArray,
       list: this.state.list,
     });
   }
@@ -50,6 +68,27 @@ class TodoList extends React.Component {
     }
   }
 
+  componentDidUpdate() {
+    localStorage.setItem('list', JSON.stringify(this.state.list))
+    localStorage.setItem('complete', JSON.stringify(this.state.complete))
+  }
+
+  componentDidMount() {
+    if (localStorage.getItem('list') != null){
+      var todolist = JSON.parse(localStorage.getItem('list'));
+      console.log(todolist)
+      this.setState({
+        list: todolist,
+      })
+    }
+    if (localStorage.getItem('complete') != null){
+      var completed = JSON.parse(localStorage.getItem('complete'));
+      this.setState({
+        complete: completed,
+      })
+    }
+  }
+  
   render() {
 
     return (
@@ -60,7 +99,7 @@ class TodoList extends React.Component {
               onChange={(e) => this.modifyInput("textInput", e.target.value)}
               type="text"
               onKeyUp={this.onKeyUpValue.bind(this)}
-              className="form-control"
+              className="form-control border-info"
               placeholder="Add to List"
               value={this.state.textInput}
               aria-label="Add to List"
@@ -69,7 +108,7 @@ class TodoList extends React.Component {
             <div className="input-group-append">
               <button
                 onClick={() => this.addTodo(this.state.textInput)}
-                className="btn btn-outline-secondary"
+                className="btn btn-info"
                 //button should push to tasks array
                 type="button"
                 id="button-addon2"
@@ -79,28 +118,51 @@ class TodoList extends React.Component {
             </div>
           </div>
         </div>
-        <div className="row">
+        <div className="row h-50 d-inline-block float-left">
+          <h5>To Do:</h5>
+          <div className="row h-50 d-inline-block float-left">
+            <ul className="list-group col col-3 mx-auto">
+              {this.state.list.map((obj, i) => {
+                return (
+                  <li className="pt-1" key={i}>
+                    {obj.value} <br />
+                    <button
+                      type="button"
+                      onClick={() => this.removeTodo(obj.id)}
+                      className="btn btn-danger btn-sm"
+                    >
+                      Delete
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => this.markCompleted(obj.id)}
+                      className="btn btn-success btn-sm"
+                    >
+                      Completed
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </div>
+        <div className="row h-50 d-inline-block float-right">
+          <h5>Completed Tasks:</h5>
           <ul className="list-group col col-3 mx-auto">
-            {this.state.list.map((obj) => {
-              return(
-              <li className="pt-1">
-                {obj.value}
-                <button
-                  type="button"
-                  onClick={() => this.removeTodo(obj.id)}
-                  type="button"
-                  className="btn btn-danger"
-                >
-                  Delete
-                </button>
-              </li>
-            )})}
+            {this.state.complete.map((obj) => {
+              return (
+                <li className="pt-1">
+                  {obj.value} <br />
+                </li>
+              );
+            })}
           </ul>
         </div>
-          <footer className="fixed-bottom pb-5 text-center">
-            You have {this.state.list.length} things left to do!
-          </footer>
-        </div>
+        <footer className="fixed-bottom pb-5 text-center">
+          You have {this.state.list.length} things left to do and you have
+          completed {this.state.complete.length} tasks!
+        </footer>
+      </div>
     );
   }
 }
