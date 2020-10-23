@@ -76,11 +76,11 @@ class TodoList extends React.Component {
   componentDidMount() {
     if (localStorage.getItem('list') != null){
       var todolist = JSON.parse(localStorage.getItem('list'));
-      console.log(todolist)
       this.setState({
         list: todolist,
       })
     }
+
     if (localStorage.getItem('complete') != null){
       var completed = JSON.parse(localStorage.getItem('complete'));
       this.setState({
