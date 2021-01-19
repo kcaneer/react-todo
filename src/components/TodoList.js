@@ -118,45 +118,47 @@ class TodoList extends React.Component {
             </div>
           </div>
         </div>
-        <div className="row h-50 d-inline-block float-left">
-          <h5>To Do:</h5>
-          <div className="row h-50 d-inline-block float-left">
-            <ul className="list-group col col-3 mx-auto">
-              {this.state.list.map((obj, i) => {
+        <div className="row d-flex justify-content-between">
+          <div className="row h-50 d-inline-block">
+            <h5>To Do:</h5>
+            <div className="row h-50 d-inline-block">
+              <ul className="list-group col col-4 mx-auto">
+                {this.state.list.map((obj, i) => {
+                  return (
+                    <li className="pt-1" key={i}>
+                      {obj.value} <br />
+                      <button
+                        type="button"
+                        onClick={() => this.removeTodo(obj.id)}
+                        className="btn btn-danger btn-sm"
+                      >
+                        Delete
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => this.markCompleted(obj.id)}
+                        className="btn btn-success btn-sm"
+                      >
+                        Completed
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </div>
+          <div className="row h-50 d-inline-block">
+            <h5>Completed Tasks:</h5>
+            <ul className="list-group col col-4 mx-auto">
+              {this.state.complete.map((obj) => {
                 return (
-                  <li className="pt-1" key={i}>
+                  <li className="pt-1">
                     {obj.value} <br />
-                    <button
-                      type="button"
-                      onClick={() => this.removeTodo(obj.id)}
-                      className="btn btn-danger btn-sm"
-                    >
-                      Delete
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => this.markCompleted(obj.id)}
-                      className="btn btn-success btn-sm"
-                    >
-                      Completed
-                    </button>
                   </li>
                 );
               })}
             </ul>
           </div>
-        </div>
-        <div className="row h-50 d-inline-block float-right">
-          <h5>Completed Tasks:</h5>
-          <ul className="list-group col col-3 mx-auto">
-            {this.state.complete.map((obj) => {
-              return (
-                <li className="pt-1">
-                  {obj.value} <br />
-                </li>
-              );
-            })}
-          </ul>
         </div>
         <footer className="fixed-bottom pb-5 text-center">
           You have {this.state.list.length} things left to do and you have
