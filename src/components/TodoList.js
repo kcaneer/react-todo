@@ -11,17 +11,17 @@ class TodoList extends React.Component {
     };
   }
 
-//instead of input, use an 0bject that will store unique id, value ie: text, status ie: active
+  //instead of input, use an 0bject that will store unique id, value ie: text, status ie: active
   addTodo() {
     //copy of current list of items so that i don't modify state directly
-    
+
     let taskArray = this.state.list;
 
-    const input={
+    const input = {
       value: this.state.textInput,
       id: Date.now(),
       // status: active,
-    }
+    };
 
     //push new input item to existing list
     taskArray.push(input);
@@ -34,7 +34,7 @@ class TodoList extends React.Component {
   }
 
   removeTodo(id) {
-    let foundIndex = this.state.list.findIndex(item => item.id === id)
+    let foundIndex = this.state.list.findIndex((item) => item.id === id);
     this.state.list.splice(foundIndex, 1);
     this.setState({
       list: this.state.list,
@@ -43,13 +43,13 @@ class TodoList extends React.Component {
 
   markCompleted(id) {
     let foundItem = this.state.list.find((item) => item.id === id);
-    
+
     this.state.list.splice(foundItem, 1);
-    
+
     let completeArray = this.state.complete;
 
     completeArray.push(foundItem);
-  
+
     this.setState({
       complete: completeArray,
       list: this.state.list,
@@ -69,28 +69,27 @@ class TodoList extends React.Component {
   }
 
   componentDidUpdate() {
-    localStorage.setItem('list', JSON.stringify(this.state.list))
-    localStorage.setItem('complete', JSON.stringify(this.state.complete))
+    localStorage.setItem("list", JSON.stringify(this.state.list));
+    localStorage.setItem("complete", JSON.stringify(this.state.complete));
   }
 
   componentDidMount() {
-    if (localStorage.getItem('list') != null){
-      var todolist = JSON.parse(localStorage.getItem('list'));
+    if (localStorage.getItem("list") != null) {
+      var todolist = JSON.parse(localStorage.getItem("list"));
       this.setState({
         list: todolist,
-      })
+      });
     }
 
-    if (localStorage.getItem('complete') != null){
-      var completed = JSON.parse(localStorage.getItem('complete'));
+    if (localStorage.getItem("complete") != null) {
+      var completed = JSON.parse(localStorage.getItem("complete"));
       this.setState({
         complete: completed,
-      })
+      });
     }
   }
-  
-  render() {
 
+  render() {
     return (
       <div className="container">
         <div className="row mx-auto pt-2">
@@ -118,11 +117,11 @@ class TodoList extends React.Component {
             </div>
           </div>
         </div>
-        <div className="col col-sm-12 col-md-8 mx-auto d-flex justify-content-around">
-          <div className="row h-50 d-inline-block">
+        <div className="col col-8 mx-auto">
+          <div className="row h-50 d-inline-block float-left">
             <h5>To Do:</h5>
-            <div className="row h-50 d-inline-block">
-              <ul className="list-group col col-sm-6 col-md-4 mx-auto">
+            <div className="row h-50 d-inline-block float-left">
+              <ul className="list-group col col-6 mx-auto">
                 {this.state.list.map((obj, i) => {
                   return (
                     <li className="pt-1" key={i}>
@@ -147,17 +146,19 @@ class TodoList extends React.Component {
               </ul>
             </div>
           </div>
-          <div className="row h-50 d-inline-block">
+          <div className="row h-50 d-inline-block float-right">
             <h5>Completed Tasks:</h5>
-            <ul className="list-group col col-sm-6 col-md-4 mx-auto">
-              {this.state.complete.map((obj) => {
-                return (
-                  <li className="pt-1">
-                    {obj.value} <br />
-                  </li>
-                );
-              })}
-            </ul>
+            <div className="row h-50 d-inline-block float-right">
+              <ul className="list-group col col-6 mx-auto">
+                {this.state.complete.map((obj) => {
+                  return (
+                    <li className="pt-1">
+                      {obj.value} <br />
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
           </div>
         </div>
         <footer className="fixed-bottom pb-5 text-center">
