@@ -118,11 +118,11 @@ class TodoList extends React.Component {
             </div>
           </div>
         </div>
-        <div className="row d-flex justify-content-between">
+        <div className="col-8 mx-auto d-flex justify-content-between">
           <div className="row h-50 d-inline-block">
             <h5>To Do:</h5>
             <div className="row h-50 d-inline-block">
-              <ul className="list-group col col-4 mx-auto">
+              <ul className="list-group col col-6 mx-auto">
                 {this.state.list.map((obj, i) => {
                   return (
                     <li className="pt-1" key={i}>
@@ -149,7 +149,7 @@ class TodoList extends React.Component {
           </div>
           <div className="row h-50 d-inline-block">
             <h5>Completed Tasks:</h5>
-            <ul className="list-group col col-4 mx-auto">
+            <ul className="list-group col col-6 mx-auto">
               {this.state.complete.map((obj) => {
                 return (
                   <li className="pt-1">
